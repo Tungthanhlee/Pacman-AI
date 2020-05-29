@@ -1,3 +1,4 @@
+
 # pacman.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
@@ -39,6 +40,7 @@ code to run a game.  This file is divided into three sections:
 To play your first game, type 'python pacman.py' from the command line.
 The keys are 'a', 's', 'd', and 'w' to move (or arrow keys).  Have fun!
 """
+
 from game import GameStateData
 from game import Game
 from game import Directions
@@ -51,6 +53,11 @@ import sys, types, time, random, os
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
 ###################################################
+import matplotlib as matpl
+if os.environ.get('DISPLAY','') == '':
+    print('Currently no display found. Using the non-interactive Agg backend')
+    matpl.use('Agg')
+import matplotlib.pyplot as plot
 
 class GameState:
     """
