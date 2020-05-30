@@ -389,25 +389,20 @@ def cornersHeuristic(state, problem):
     node = state[0]       # Current node
     heuristic = 0         # Heuristic value
 
-    # Find all the corners that we haven't visited yet, and append them to a 
-    # list so we can go through them
     for corner in corners:
         if not corner in visited:
             unvisited.append(corner)
-    
-    # Find the sum of the shortest distances between the unvisited corners. Use 
-    # this as the heuristic because it is consistent (will always choose the
-    # same corners for a given situation). It solves the simpler problem where
-    # we find the number of moves when all of the walls have been removed. The
-    # heuristic will return 0 at a goal state since the minimum distance to a 
-    # corner when in a corner is 0, and will never return a negative since 
-    # mangattanDistance can never be negative. 
+
     while unvisited:
-        distance, corner = min([(util.manhattanDistance(node, corner), corner) \
-                                for corner in unvisited])
+        closestCorner = state[0]
+        distance = 100000
+        for corner in unvisited:
+            if distance > util.manhattanDistance(node, corner):
+                distance = util.manhattanDistance(node, corner)
+                closestCorner = corner
         heuristic += distance
-        node = corner
-        unvisited.remove(corner)
+        node = closestCorner
+        unvisited.remove(closestCorner)
 
     return heuristic
     
@@ -510,15 +505,9 @@ def foodHeuristic(state, problem):
     
     foodList = foodGrid.asList()
 
-    # If there isn't any food, then there isn't a problem to solve
-    if len(foodList) == 0:
-        return 0
-        
     heuristic = 0
     for food in foodList:
-        distance = mazeDistance(position, food, problem.startingGameState)
-        if distance > heuristic:
-            heuristic = distance
+        heuristic = max(mazeDistance(position, food, problem.startingGameState), heuristic)
     return heuristic
 
 class ClosestDotSearchAgent(SearchAgent):
