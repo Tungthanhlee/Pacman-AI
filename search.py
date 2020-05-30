@@ -117,22 +117,25 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    fringe = util.Queue()
-    fringe.push( (problem.getStartState(), [], []) )
-    expanded = []
+    # THINH CHANGED
+    """ Ý tưởng là sử dụng queue, khởi tạo nó bằng hàm getStartedState() đã được cài đặt sản trong trong đó trả về node, actions và cost hiện tại.
+        nếu mở rộng tìm kiếm cho đến khi isGoalState() == true
+    """
+    bfsQueue = util.Queue()
+    bfsQueue.push( (problem.getStartState(), [], []) )
+    
+    # print("-------",bfsQueue)
+    
+    exploredNode = []
 
-    while not fringe.isEmpty():
-        node, actions, curCost = fringe.pop()
-
-        if(not node in expanded):
-            expanded.append(node)
-
+    while not bfsQueue.isEmpty():
+        node, actions, curCost = bfsQueue.pop()
+        if(not node in exploredNode):
+            exploredNode.append(node)
             if problem.isGoalState(node):
                 return actions
-
             for child, direction, cost in problem.getSuccessors(node):
-                fringe.push((child, actions+[direction], curCost + [cost]))
-
+                bfsQueue.push((child, actions+[direction], curCost + [cost]))
     return []
 
 def uniformCostSearch(problem):
